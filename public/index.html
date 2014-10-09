@@ -170,11 +170,21 @@ body, button, input, select, textarea {
 
               now_marker.setPosition(directions_routes[0].path[playId]);
 
-              pano.setPano(result.id);
-              pano.setPov({
-                heading: heading,
+              var deltaRad = 5;
+
+              panoL.setPano(result.id);
+              panoL.setPov({
+                heading: heading - deltaRad,
                 pitch: result.pitch
               });
+
+              panoR.setPano(result.id);
+              panoR.setPov({
+                heading: heading + deltaRad,
+                pitch: result.pitch
+              });
+
+
               // var pano = new qq.maps.Panorama(document.getElementById('qqPano'), {
               //  pano: result.id,
               //  pov: {
@@ -206,9 +216,14 @@ body, button, input, select, textarea {
     });
     calcRoute();
 
-    pano = new qq.maps.Panorama(document.getElementById('qqPano'), {
-    "pano": '10011001120131111029111'
-  });
+    panoL = new qq.maps.Panorama(document.getElementById('qqPanoL'), {
+      "pano": '10011001120131111029111'
+    });
+
+    panoR = new qq.maps.Panorama(document.getElementById('qqPanoR'), {
+      "pano": '10011001120131111029111'
+    });
+
   }
   function calcRoute() {
     var start_name = document.getElementById("start").value;
@@ -264,34 +279,43 @@ body, button, input, select, textarea {
 </script>
 </head>
   <body onload="init();">
-  <div id="containerLeft" class="container">
-    <div style="width:100%;height:400px" id="qqMap"></div>
-    <div style='margin:5px 0px'>
-      <b>起点: </b>
-      <select id="start" onchange="calcRoute();">
-        <option value="颐和园路口东">颐和园路口东</option>
-      </select>
-      <b>终点: </b>
-      <select id="end" onchange="calcRoute();">
-        <option value="西单地铁站">西单地铁站</option>
-      </select>
-      <b>计算策略：</b>
-      <select id="policy" onchange="calcRoute();">
-        <option value="LEAST_TIME">最少时间</option>
-        <option value="LEAST_DISTANCE">最短距离</option>
-        <option value="AVOID_HIGHWAYS">避开高速</option>
-        <option value="REAL_TRAFFIC">实时路况</option>
-        <option value="PREDICT_TRAFFIC">预测路况</option>
-      </select>
-      <label>
-        <input id="sp" type="checkbox" value='1' onclick='showP()'/>
-        显示路段地标
-      </label>
+  <div id="containerUp">
+    <div id="containerLeft" class="container">
+      <div style="width:100%;height:400px" id="qqPanoL"></div>
     </div>
-    <div style="width:100%;padding-top:5px" id="routes"></div>
+    <div id="containerRight" class="container">
+      <div style="width:100%;height:400px" id="qqPanoR"></div>
+    </div>
   </div>
-  <div id="containerRight" class="container">
-    <div style="width:100%;height:400px" id="qqPano"></div>
+  <div id="containerDown">
+    <div id="containerLeft">
+      <div style="width:100%;height:400px" id="qqMap"></div>
+    </div>
+    <div id="containerRight">
+      <div style='margin:5px 0px'>
+        <b>起点: </b>
+        <select id="start" onchange="calcRoute();">
+          <option value="颐和园路口东">颐和园路口东</option>
+        </select>
+        <b>终点: </b>
+        <select id="end" onchange="calcRoute();">
+          <option value="西单地铁站">西单地铁站</option>
+        </select>
+        <b>计算策略：</b>
+        <select id="policy" onchange="calcRoute();">
+          <option value="LEAST_TIME">最少时间</option>
+          <option value="LEAST_DISTANCE">最短距离</option>
+          <option value="AVOID_HIGHWAYS">避开高速</option>
+          <option value="REAL_TRAFFIC">实时路况</option>
+          <option value="PREDICT_TRAFFIC">预测路况</option>
+        </select>
+        <label>
+          <input id="sp" type="checkbox" value='1' onclick='showP()'/>
+          显示路段地标
+        </label>
+      </div>
+      <div style="width:100%;padding-top:5px" id="routes"></div>
+    </div>
   </div>
   </body>
 </html>
